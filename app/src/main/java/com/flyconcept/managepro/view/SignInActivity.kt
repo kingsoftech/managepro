@@ -8,6 +8,8 @@ import android.util.Log
 import android.widget.Toast
 import com.flyconcept.managepro.R
 import com.flyconcept.managepro.databinding.ActivitySignInBinding
+import com.flyconcept.managepro.firebase.FirestoreClass
+import com.flyconcept.managepro.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -31,6 +33,7 @@ class SignInActivity : BaseActivity() {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
+            activitySignInBinding!!.toolbarSignUpActivity.setNavigationOnClickListener { onBackPressed() }
         }
     }
 
@@ -46,6 +49,7 @@ class SignInActivity : BaseActivity() {
                     hideProgressDialog()
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
+                        FirestoreClass().signInUser(this)
                         Log.d("SignIn Error", "signInWithEmail:success")
                         val user = auth.currentUser
                         startActivity(Intent(this,  MainActivity::class.java))
@@ -78,5 +82,12 @@ class SignInActivity : BaseActivity() {
                 true
             }
         }
+    }
+
+    fun signInSuccess(loggedInUser: User) {
+        hideProgressDialog()
+        startActivity(Intent(this,  MainActivity::class.java))
+        finish()
+
     }
 }
