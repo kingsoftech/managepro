@@ -1,9 +1,12 @@
 package com.flyconcept.managepro.view
 
 import android.content.Intent
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
@@ -74,13 +77,16 @@ class MainActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListe
     }
 
     fun updateNavigationUserDetails(loggedInUser: User) {
-        val navView =  NavHeaderMainBinding.inflate(layoutInflater)
+//        val navView =  NavHeaderMainBinding.inflate(layoutInflater)
+        val navViewUserImage = findViewById<ImageView>(R.id.nav_user_image)
+        val tvUsername = findViewById<TextView>(R.id.tv_username)
+        Toast.makeText(this, loggedInUser.image, Toast.LENGTH_SHORT).show()
         Glide
             .with(this)
-            .load(loggedInUser)
+            .load(loggedInUser.image)
             .placeholder(R.drawable.ic_user_place_holder)
-            .into(navView.navUserImage)
-        navView.tvUsername.text = loggedInUser.name
+            .into(navViewUserImage)
+        tvUsername.text = loggedInUser.name
 
     }
 }
