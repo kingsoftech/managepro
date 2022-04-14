@@ -5,6 +5,7 @@ import android.util.Log
 import com.flyconcept.managepro.model.User
 import com.flyconcept.managepro.utils.Constants
 import com.flyconcept.managepro.view.MainActivity
+import com.flyconcept.managepro.view.MyProfileActivity
 import com.flyconcept.managepro.view.SignInActivity
 import com.flyconcept.managepro.view.SignUpActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -23,78 +24,84 @@ class FirestoreClass(){
                 }
      }
 
-//    fun signInUser(activity: Activity){
-//
-//        mFireStore.collection(Constants.USER)
-//            // The document id to get the Fields of user.
-//            .document(getCurrentUserId())
-//            .get()
-//            .addOnSuccessListener{document->
-//                val loggedInUser = document.toObject(User::class.java)
-//                if(loggedInUser!=null){
-//                    when(activity) {
-//                       is SignInActivity-> {activity.signInSuccess(loggedInUser) }
-//                        is MainActivity -> {
-//                            activity.updateNavigationUserDetails(loggedInUser)
-//                        }
-//                    }
-//
-//                }
-//
-//            }
-//            .addOnFailureListener {
-//                when(activity) {
-//                    is SignInActivity-> {activity.hideProgressDialog() }
-//                    is MainActivity -> {
-//                        activity.hideProgressDialog()
-//                    }
-//                }
-//            }
-//
-//    }
-    fun signInUser(activity: Activity) {
+    fun loadUserData(activity: Activity){
 
-        // Here we pass the collection name from which we wants the data.
         mFireStore.collection(Constants.USER)
             // The document id to get the Fields of user.
             .document(getCurrentUserId())
             .get()
-            .addOnSuccessListener { document ->
-                Log.e(activity.javaClass.simpleName, document.toString())
-
-                // Here we have received the document snapshot which is converted into the User Data model object.
-                val loggedInUser = document.toObject(User::class.java)!!
-
-                // Here call a function of base activity for transferring the result to it.
-                when (activity) {
-                    is SignInActivity -> {
-                        activity.signInSuccess(loggedInUser!!)
-                    }
-                    is MainActivity -> {
-                        activity.updateNavigationUserDetails(loggedInUser!!)
+            .addOnSuccessListener{document->
+                val loggedInUser = document.toObject(User::class.java)
+                if(loggedInUser!=null){
+                    when(activity) {
+                       is SignInActivity-> {activity.signInSuccess(loggedInUser) }
+                        is MainActivity -> {
+                            activity.updateNavigationUserDetails(loggedInUser)
+                        }
+                        is MyProfileActivity ->{
+                            activity.setUserDataInUI(loggedInUser)
+                        }
                     }
 
                 }
+
             }
-            .addOnFailureListener { e ->
-                // Here call a function of base activity for transferring the result to it.
-                when (activity) {
-                    is SignInActivity -> {
-                        activity.hideProgressDialog()
-                    }
+            .addOnFailureListener {
+                when(activity) {
+                    is SignInActivity-> {activity.hideProgressDialog() }
                     is MainActivity -> {
                         activity.hideProgressDialog()
                     }
-
+                    is MyProfileActivity ->{
+                        activity.hideProgressDialog()
+                    }
                 }
-                Log.e(
-                    activity.javaClass.simpleName,
-                    "Error while getting loggedIn user details",
-                    e
-                )
             }
+
     }
-//    fun getCurrentUserId(): String {
+//    fun signInUser(activity: Activity) {
+//
+//        // Here we pass the collection name from which we wants the data.
+//        mFireStore.collection(Constants.USER)
+//            // The document id to get the Fields of user.
+//            .document(getCurrentUserId())
+//            .get()
+//            .addOnSuccessListener { document ->
+//                Log.e(activity.javaClass.simpleName, document.toString())
+//
+//                // Here we have received the document snapshot which is converted into the User Data model object.
+//                val loggedInUser = document.toObject(User::class.java)!!
+//
+//                // Here call a function of base activity for transferring the result to it.
+//                when (activity) {
+//                    is SignInActivity -> {
+//                        activity.signInSuccess(loggedInUser!!)
+//                    }
+//                    is MainActivity -> {
+//                        activity.updateNavigationUserDetails(loggedInUser!!)
+//                    }
+//
+//                }
+//            }
+//            .addOnFailureListener { e ->
+//                // Here call a function of base activity for transferring the result to it.
+//                when (activity) {
+//                    is SignInActivity -> {
+//                        activity.hideProgressDialog()
+//                    }
+//                    is MainActivity -> {
+//                        activity.hideProgressDialog()
+//                    }
+//
+//                }
+//                Log.e(
+//                    activity.javaClass.simpleName,
+//                    "Error while getting loggedIn user details",
+//                    e
+//                )
+//            }
+//    }
+////    fun getCurrentUserId(): String {
 //
 //        val currentUser = FirebaseAuth.getInstance().currentUser
 //        var currentUserId = " "

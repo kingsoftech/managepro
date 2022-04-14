@@ -10,6 +10,10 @@
 		android:supportsRtl="true"
 		android:theme="@style/Theme.ManagePro">
 		<activity
+			android:name=".view.MyProfileActivity"
+			android:exported="false"
+			android:theme="@style/Theme.ManagePro.NoActionBar"/>
+		<activity
 			android:name=".view.BaseActivity"
 			android:exported="false" />
 		<activity
@@ -39,7 +43,7 @@
 			android:name=".view.MainActivity"
 			android:exported="true"
 			android:screenOrientation="portrait"
-			android:theme="@style/Theme.ManagePro.NoActionBar"/>
+			android:theme="@style/Theme.ManagePro.NoActionBar" />
 	</application>
 
 </manifest>

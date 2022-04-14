@@ -1,8 +1,6 @@
 package com.flyconcept.managepro.view
 
 import android.content.Intent
-import android.media.Image
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
@@ -12,7 +10,6 @@ import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.flyconcept.managepro.R
 import com.flyconcept.managepro.databinding.ActivityMainBinding
-import com.flyconcept.managepro.databinding.NavHeaderMainBinding
 import com.flyconcept.managepro.firebase.FirestoreClass
 import com.flyconcept.managepro.model.User
 import com.google.android.material.navigation.NavigationView
@@ -26,7 +23,7 @@ class MainActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListe
         setContentView(activityMainBinding!!.root)
         setupActionBar()
         activityMainBinding!!.navView.setNavigationItemSelectedListener(this)
-        FirestoreClass().signInUser(this)
+        FirestoreClass().loadUserData(this)
     }
 
     private fun setupActionBar(){
@@ -61,7 +58,8 @@ class MainActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListe
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.nav_my_profile->{
-                Toast.makeText(this, "my profile", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MyProfileActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_sign_out->{
                 FirebaseAuth.getInstance().signOut()

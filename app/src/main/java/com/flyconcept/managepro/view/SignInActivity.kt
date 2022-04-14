@@ -1,7 +1,6 @@
 package com.flyconcept.managepro.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -11,7 +10,6 @@ import com.flyconcept.managepro.databinding.ActivitySignInBinding
 import com.flyconcept.managepro.firebase.FirestoreClass
 import com.flyconcept.managepro.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 class SignInActivity : BaseActivity() {
     private val auth = FirebaseAuth.getInstance()
@@ -49,7 +47,7 @@ class SignInActivity : BaseActivity() {
                     hideProgressDialog()
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-                        FirestoreClass().signInUser(this)
+                        FirestoreClass().loadUserData(this)
                         Log.d("SignIn Error", "signInWithEmail:success")
                         val user = auth.currentUser
                         startActivity(Intent(this,  MainActivity::class.java))
