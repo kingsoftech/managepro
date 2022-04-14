@@ -2,6 +2,7 @@ package com.flyconcept.managepro.firebase
 
 import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import com.flyconcept.managepro.model.User
 import com.flyconcept.managepro.utils.Constants
 import com.flyconcept.managepro.view.MainActivity
@@ -40,7 +41,10 @@ class FirestoreClass(){
                         }
                         is MyProfileActivity ->{
                             activity.setUserDataInUI(loggedInUser)
+
+
                         }
+
                     }
 
                 }
@@ -58,6 +62,24 @@ class FirestoreClass(){
                 }
             }
 
+    }
+
+    fun updateUserProfileData(activity: MyProfileActivity, userHashMap: HashMap<String, Any>){
+        mFireStore.collection(Constants.USER)
+            .document(getCurrentUserId())
+            .update(userHashMap)
+            .addOnSuccessListener {
+                Log.i(activity.javaClass.simpleName, "Profile data updated Successfully")
+
+                Toast.makeText(activity, "Profile updated Successfully", Toast.LENGTH_SHORT).show()
+                activity.profileUpdateSuccess()
+            }
+            .addOnFailureListener {e->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error updating data", e)
+                Toast.makeText(activity, "error updating profile", Toast.LENGTH_SHORT).show()
+
+            }
     }
 //    fun signInUser(activity: Activity) {
 //
