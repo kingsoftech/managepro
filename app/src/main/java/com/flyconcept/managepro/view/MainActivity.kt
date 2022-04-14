@@ -1,11 +1,15 @@
 package com.flyconcept.managepro.view
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.flyconcept.managepro.R
@@ -17,6 +21,17 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListener{
     var activityMainBinding: ActivityMainBinding? = null
+    private val startActivityForResultLauncher:ActivityResultLauncher<Intent>
+    = registerForActivityResult(ActivityResultContracts.
+    StartActivityForResult()){result->
+    if(result.resultCode ==Activity.RESULT_OK)
+    {
+        FirestoreClass().loadUserData(this)
+    }else{
+        Log.e("Cancelled", "Cancelled")
+    }
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -59,7 +74,8 @@ class MainActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListe
         when(item.itemId){
             R.id.nav_my_profile->{
                 val intent = Intent(this, MyProfileActivity::class.java)
-                startActivity(intent)
+                startActivityForResultLauncher.launch(intent)
+
             }
             R.id.nav_sign_out->{
                 FirebaseAuth.getInstance().signOut()

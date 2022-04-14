@@ -1,6 +1,7 @@
 package com.flyconcept.managepro.view
 
 import android.Manifest
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -184,6 +185,7 @@ class MyProfileActivity :BaseActivity() {
     }
     fun profileUpdateSuccess(){
         hideProgressDialog()
+        setResult(Activity.RESULT_OK)
         finish()
     }
 
