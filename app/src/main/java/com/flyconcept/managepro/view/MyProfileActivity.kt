@@ -189,26 +189,8 @@ class MyProfileActivity :BaseActivity() {
         finish()
     }
 
-    private fun showRationalDialogForPermissions() {
-        AlertDialog.Builder(this)
-            .setMessage("It Looks like you have turned off permissions required for this feature. It can be enabled under Application Settings")
-            .setPositiveButton(
-                "GO TO SETTINGS"
-            ) { _, _ ->
-                try {
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    val uri = Uri.fromParts("package", packageName, null)
-                    intent.data = uri
-                    startActivity(intent)
-                } catch (e: ActivityNotFoundException) {
-                    e.printStackTrace()
-                }
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }.show()
-    }
-    fun updateUserProfileDate(){
+
+    private fun updateUserProfileDate(){
         val userHashMap= HashMap<String, Any>()
         var anychangesMade = false
         if(mProfileImageUri.isNotEmpty() && mProfileImageUri != mUserDetails.image){
