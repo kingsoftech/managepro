@@ -1,22 +1,22 @@
 package com.flyconcept.managepro.view
 
 import android.Manifest
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.Settings
+
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
+
 import com.bumptech.glide.Glide
 import com.flyconcept.managepro.R
 import com.flyconcept.managepro.databinding.ActivityCreateBoardBinding
+import com.flyconcept.managepro.utils.Constants
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -28,6 +28,7 @@ import java.io.IOException
 class CreateBoardActivity :BaseActivity() {
     var activityCreateBoardBinding: ActivityCreateBoardBinding? = null
     private var mSelectedImageFileUri: Uri? = null
+    private lateinit var mUsername:String
     val openGalleryResultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ){result->
@@ -52,7 +53,10 @@ class CreateBoardActivity :BaseActivity() {
         activityCreateBoardBinding = ActivityCreateBoardBinding.inflate(layoutInflater)
         setContentView(activityCreateBoardBinding!!.root)
         setUpActionBar()
-        activityCreateBoardBinding!!.ivBoardImage.setOnClickListener {
+        if(intent.hasExtra(Constants.NAME))
+        {
+            mUsername = intent.getStringExtra(Constants.NAME)!!
+        }
             activityCreateBoardBinding!!.ivBoardImage.setOnClickListener {
                 Toast.makeText(
                     this@CreateBoardActivity,
@@ -93,18 +97,23 @@ class CreateBoardActivity :BaseActivity() {
                     .check()
             }
         }
-    }
-    fun setUpActionBar() {
+
+    private fun setUpActionBar() {
         setSupportActionBar(activityCreateBoardBinding!!.toolbarCreateBoardActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
-            actionBar.title = resources.getString(R.string.my_profile)
+
 
         }
 
+
         activityCreateBoardBinding!!.toolbarCreateBoardActivity.setNavigationOnClickListener { onBackPressed() }
+    }
+    fun boardCreatedSuccessfully(){
+        hideProgressDialog()
+        finish()
     }
 }

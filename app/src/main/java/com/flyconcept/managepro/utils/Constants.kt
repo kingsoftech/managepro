@@ -13,4 +13,6 @@ object Constants {
     const val NAME:String = "name"
     const val MOBILE:String = "mobile"
 
+    const val BOARDS:String = "boards"
+
 }

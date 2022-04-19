@@ -16,11 +16,14 @@ import com.flyconcept.managepro.R
 import com.flyconcept.managepro.databinding.ActivityMainBinding
 import com.flyconcept.managepro.firebase.FirestoreClass
 import com.flyconcept.managepro.model.User
+import com.flyconcept.managepro.utils.Constants
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListener{
     var activityMainBinding: ActivityMainBinding? = null
+    private lateinit var mUsername:String
     private val startActivityForResultLauncher:ActivityResultLauncher<Intent>
     = registerForActivityResult(ActivityResultContracts.
     StartActivityForResult()){result->
@@ -39,8 +42,11 @@ class MainActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListe
         setupActionBar()
         activityMainBinding!!.navView.setNavigationItemSelectedListener(this)
         FirestoreClass().loadUserData(this)
-        activityMainBinding!!.appBarMain.fabCreateBoard.setOnClickListener {
-            startActivity(Intent(this@MainActivity, CreateBoardActivity::class.java))
+        var fabCreateBoard = findViewById<FloatingActionButton>(R.id.fab_create_board)
+        fabCreateBoard.setOnClickListener {
+            val intent = Intent(this@MainActivity, CreateBoardActivity::class.java)
+            intent.putExtra(Constants.NAME, mUsername)
+            startActivity(intent)
         }
     }
 
@@ -97,6 +103,7 @@ class MainActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListe
 //        val navView =  NavHeaderMainBinding.inflate(layoutInflater)
         val navViewUserImage = findViewById<ImageView>(R.id.nav_user_image)
         val tvUsername = findViewById<TextView>(R.id.tv_username)
+        mUsername = loggedInUser.name
         Toast.makeText(this, loggedInUser.image, Toast.LENGTH_SHORT).show()
         Glide
             .with(this)

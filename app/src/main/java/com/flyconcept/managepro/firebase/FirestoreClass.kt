@@ -3,12 +3,10 @@ package com.flyconcept.managepro.firebase
 import android.app.Activity
 import android.util.Log
 import android.widget.Toast
+import com.flyconcept.managepro.model.Board
 import com.flyconcept.managepro.model.User
 import com.flyconcept.managepro.utils.Constants
-import com.flyconcept.managepro.view.MainActivity
-import com.flyconcept.managepro.view.MyProfileActivity
-import com.flyconcept.managepro.view.SignInActivity
-import com.flyconcept.managepro.view.SignUpActivity
+import com.flyconcept.managepro.view.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -20,11 +18,31 @@ class FirestoreClass(){
      fun registerUser(activity: SignUpActivity, userInfo: User){
             mFireStore.collection(Constants.USER)
                 .document(getCurrentUserId())
-                .set(userInfo, SetOptions.merge()).addOnSuccessListener {
+                .set(userInfo, SetOptions.merge())
+                .addOnSuccessListener {
                     activity.userRegisteredSuccess()
                 }
-     }
+                .addOnFailureListener {
+                    e->
+                    Log.e(activity.javaClass.simpleName, "error writing document" +e)
+                }
 
+     }
+    fun createBoard(activity: CreateBoardActivity, board:Board){
+        mFireStore.collection(Constants.BOARDS)
+            .document()
+            .set(board, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.boardCreatedSuccessfully()
+                Log.e(activity.javaClass.simpleName, "board created successfully")
+                Toast.makeText(activity, "board created successfully", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                    e->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "error writing document" ,e)
+            }
+    }
     fun loadUserData(activity: Activity){
 
         mFireStore.collection(Constants.USER)

@@ -222,8 +222,5 @@ class MyProfileActivity :BaseActivity() {
             activityMyProfileBinding!!.etMobile.setText(user.mobile.toString())
         }
         activityMyProfileBinding!!.etName.setText(user.name)
-
-
-
     }
 }
