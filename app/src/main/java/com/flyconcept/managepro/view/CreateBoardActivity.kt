@@ -7,6 +7,8 @@ import android.os.Build
 
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
+import android.webkit.MimeTypeMap
 
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -16,7 +18,11 @@ import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
 import com.flyconcept.managepro.R
 import com.flyconcept.managepro.databinding.ActivityCreateBoardBinding
+import com.flyconcept.managepro.firebase.FirestoreClass
+import com.flyconcept.managepro.model.Board
 import com.flyconcept.managepro.utils.Constants
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -24,10 +30,12 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import java.io.IOException
+import java.util.ArrayList
 
 class CreateBoardActivity :BaseActivity() {
     var activityCreateBoardBinding: ActivityCreateBoardBinding? = null
     private var mSelectedImageFileUri: Uri? = null
+    private var mBoardImageUrl:String = ""
     private lateinit var mUsername:String
     val openGalleryResultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -56,6 +64,15 @@ class CreateBoardActivity :BaseActivity() {
         if(intent.hasExtra(Constants.NAME))
         {
             mUsername = intent.getStringExtra(Constants.NAME)!!
+        }
+        activityCreateBoardBinding!!.btnCreate.setOnClickListener {
+            if(mSelectedImageFileUri != null){
+                uploadUserImage()
+            }
+            else{
+                showProgressDialog(resources.getString(R.string.please_wait))
+                createBoard()
+            }
         }
             activityCreateBoardBinding!!.ivBoardImage.setOnClickListener {
                 Toast.makeText(
@@ -111,6 +128,68 @@ class CreateBoardActivity :BaseActivity() {
 
 
         activityCreateBoardBinding!!.toolbarCreateBoardActivity.setNavigationOnClickListener { onBackPressed() }
+    }
+    private fun createBoard(){
+        val assignedUsersArrayList: ArrayList<String> = ArrayList()
+        assignedUsersArrayList.add(FirestoreClass().getCurrentUserId())
+        var board: Board = Board(
+            activityCreateBoardBinding!!.etBoardName.text.toString(),
+            mBoardImageUrl,
+            mUsername,
+            assignedUsersArrayList
+
+        )
+        FirestoreClass().createBoard(this, board)
+    }
+
+    private fun getFileExtension(uri:Uri?):String?{
+        return MimeTypeMap.getSingleton().
+        getExtensionFromMimeType(contentResolver.getType(uri!!))
+    }
+    private fun uploadUserImage() {
+        showProgressDialog(resources.getString(R.string.please_wait))
+
+        if (mSelectedImageFileUri != null) {
+
+            //getting the storage reference
+            val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
+                "BOARD_IMAGE" + System.currentTimeMillis() + "."
+                        + getFileExtension(mSelectedImageFileUri)
+            )
+
+            //adding the file to reference
+            sRef.putFile(mSelectedImageFileUri!!)
+                .addOnSuccessListener { taskSnapshot ->
+                    // The image upload is success
+                    Log.e(
+                        "Firebase Image URL",
+                        taskSnapshot.metadata!!.reference!!.downloadUrl.toString()
+                    )
+
+                    // Get the downloadable url from the task snapshot
+                    taskSnapshot.metadata!!.reference!!.downloadUrl
+                        .addOnSuccessListener { uri ->
+                            Log.e("Downloadable Image URL", uri.toString())
+
+                            // assign the image url to the variable.
+                            mBoardImageUrl = uri.toString()
+                            hideProgressDialog()
+
+                            // Call a function to update user details in the database.
+                            createBoard()
+                        }
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(
+                        this@CreateBoardActivity,
+                        exception.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    hideProgressDialog()
+                }
+
+        }
     }
     fun boardCreatedSuccessfully(){
         hideProgressDialog()

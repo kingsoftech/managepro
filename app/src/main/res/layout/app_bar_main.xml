@@ -21,6 +21,7 @@
 
 	<include layout="@layout/main_content" />
 
+
 	<com.google.android.material.floatingactionbutton.FloatingActionButton
 		android:id="@+id/fab_create_board"
 		android:layout_width="wrap_content"
