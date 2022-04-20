@@ -29,8 +29,8 @@ class BoardItemAdapter(private val context: Context,
                 .centerCrop()
                 .placeholder(R.drawable.ic_user_place_holder)
                 .into(holder.ivImage)
-            holder.tvCreatedBy.text =model.createdBy
-            holder.tvName.text = "Created by: ${model.name}"
+            holder.tvCreatedBy.text ="Created by: ${model.createdBy}"
+            holder.tvName.text = model.name
 
             holder.itemView.setOnClickListener {
                 if(onClickListener != null)

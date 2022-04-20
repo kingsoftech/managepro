@@ -43,7 +43,31 @@ class FirestoreClass(){
                 Log.e(activity.javaClass.simpleName, "error writing document" ,e)
             }
     }
-    fun loadUserData(activity: Activity){
+
+    fun getBoardList(activity: MainActivity){
+        mFireStore.collection(Constants.BOARDS)
+            .whereArrayContains(Constants.ASSIGNED_TO, getCurrentUserId())
+            .get()
+            .addOnSuccessListener {
+                document->
+                Log.i(activity.javaClass.simpleName, document.documents.toString())
+                val boardList:ArrayList<Board> =ArrayList()
+                for(i in document.documents)
+                {
+                    var  board = i.toObject(Board::class.java)!!
+                    board.documentID =i.id
+                    boardList.add(board)
+                }
+                activity.populateBoardsListToUI(boardList)
+            }
+            .addOnFailureListener {e->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error updating data", e)
+                Toast.makeText(activity, "error updating profile", Toast.LENGTH_SHORT).show()
+
+            }
+    }
+    fun loadUserData(activity: Activity, readBoardList:Boolean = false){
 
         mFireStore.collection(Constants.USER)
             // The document id to get the Fields of user.
@@ -55,7 +79,7 @@ class FirestoreClass(){
                     when(activity) {
                        is SignInActivity-> {activity.signInSuccess(loggedInUser) }
                         is MainActivity -> {
-                            activity.updateNavigationUserDetails(loggedInUser)
+                            activity.updateNavigationUserDetails(loggedInUser,readBoardList)
                         }
                         is MyProfileActivity ->{
                             activity.setUserDataInUI(loggedInUser)

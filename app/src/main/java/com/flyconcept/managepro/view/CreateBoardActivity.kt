@@ -129,6 +129,8 @@ class CreateBoardActivity :BaseActivity() {
 
         activityCreateBoardBinding!!.toolbarCreateBoardActivity.setNavigationOnClickListener { onBackPressed() }
     }
+
+
     private fun createBoard(){
         val assignedUsersArrayList: ArrayList<String> = ArrayList()
         assignedUsersArrayList.add(FirestoreClass().getCurrentUserId())
@@ -193,6 +195,7 @@ class CreateBoardActivity :BaseActivity() {
     }
     fun boardCreatedSuccessfully(){
         hideProgressDialog()
+        setResult(RESULT_OK)
         finish()
     }
 }

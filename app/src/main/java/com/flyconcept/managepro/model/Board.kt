@@ -6,13 +6,15 @@ import android.os.Parcelable
 data class Board(val name:String= "",
                  val image:String = "",
                  val createdBy:String= "",
-                 val assignedTo:ArrayList<String> = ArrayList()
+                 val assignedTo:ArrayList<String> = ArrayList(),
+                 var documentID:String = ""
 ):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.createStringArrayList()!!
+        parcel.createStringArrayList()!!,
+        parcel.readString()!!
     ) {
     }
 
@@ -25,6 +27,7 @@ data class Board(val name:String= "",
         dest!!.writeString(image)
         dest!!.writeString(createdBy)
         dest!!.writeStringList(assignedTo)
+        dest!!.writeString(documentID)
 
 
     }
