@@ -2,14 +2,19 @@ package com.flyconcept.managepro.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.flyconcept.managepro.R
 import com.flyconcept.managepro.databinding.ActivityTaskListBinding
 import com.flyconcept.managepro.firebase.FirestoreClass
 import com.flyconcept.managepro.model.Board
+import com.flyconcept.managepro.model.Task
 import com.flyconcept.managepro.utils.Constants
+import com.flyconcept.managepro.view.adapters.TaskListItemAdapter
 
 class TaskListActivity : BaseActivity() {
     var taskListActivityBinding: ActivityTaskListBinding? = null
+    private lateinit var mBoardDetails: Board
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         taskListActivityBinding = ActivityTaskListBinding.inflate(layoutInflater)
@@ -24,7 +29,17 @@ class TaskListActivity : BaseActivity() {
 
     fun boardDetails(board: Board) {
         hideProgressDialog()
+        mBoardDetails = board
         setUpActionBar(board.name)
+        val addTaskList = Task(resources.getString(R.string.add_list))
+        board.taskList.add(addTaskList)
+        var rvTaskList:RecyclerView =  taskListActivityBinding!!.rvTaskList
+        rvTaskList.layoutManager = LinearLayoutManager(this,
+            LinearLayoutManager.HORIZONTAL,
+            false)
+        rvTaskList.setHasFixedSize(true)
+        val adapter = TaskListItemAdapter(this, board.taskList)
+        rvTaskList.adapter = adapter
 
     }
 

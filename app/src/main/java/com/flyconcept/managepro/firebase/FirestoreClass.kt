@@ -194,7 +194,8 @@ class FirestoreClass(){
             .addOnSuccessListener {
                     document->
                 Log.i(activity.javaClass.simpleName, document.toString())
-
+                val board = document.toObject(Board::class.java)!!
+                board.documentID = document.id
                 activity.boardDetails(document.toObject(Board::class.java)!!)
             }
             .addOnFailureListener {e->
