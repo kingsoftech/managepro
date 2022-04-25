@@ -45,7 +45,9 @@ class BoardItemAdapter(private val context: Context,
     override fun getItemCount(): Int {
         return list.size
     }
-
+    fun setOnClickListener(onClickListener: OnClickListener){
+        this.onClickListener = onClickListener
+    }
     private class MyViewHolder(binding:ItemBoardBinding):RecyclerView.ViewHolder(binding.root){
         val ivImage = binding.ivBoardImage
         val tvName = binding.tvName

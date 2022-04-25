@@ -7,14 +7,16 @@ data class Board(val name:String= "",
                  val image:String = "",
                  val createdBy:String= "",
                  val assignedTo:ArrayList<String> = ArrayList(),
-                 var documentID:String = ""
+                 var documentID:String = "",
+                 var taskList:ArrayList<Task> = ArrayList()
 ):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.createStringArrayList()!!,
-        parcel.readString()!!
+        parcel.readString()!!,
+        parcel.createTypedArrayList(Task.CREATOR)!!
     ) {
     }
 
@@ -28,6 +30,7 @@ data class Board(val name:String= "",
         dest!!.writeString(createdBy)
         dest!!.writeStringList(assignedTo)
         dest!!.writeString(documentID)
+        dest!!.writeTypedList(taskList)
 
 
     }

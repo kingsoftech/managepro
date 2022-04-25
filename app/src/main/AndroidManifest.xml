@@ -14,9 +14,13 @@
 		android:supportsRtl="true"
 		android:theme="@style/Theme.ManagePro">
 		<activity
-			android:name=".view.CreateBoardActivity"
+			android:name=".view.TaskListActivity"
 			android:exported="false"
 			android:theme="@style/Theme.ManagePro.NoActionBar"/>
+		<activity
+			android:name=".view.CreateBoardActivity"
+			android:exported="false"
+			android:theme="@style/Theme.ManagePro.NoActionBar" />
 		<activity
 			android:name=".view.MyProfileActivity"
 			android:exported="false"

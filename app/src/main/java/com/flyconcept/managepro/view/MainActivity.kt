@@ -79,6 +79,15 @@ class MainActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListe
             rvBoardList.setHasFixedSize(true)
             val adapter = BoardItemAdapter(this, boardList)
             rvBoardList.adapter = adapter
+            adapter.setOnClickListener(object :BoardItemAdapter.OnClickListener{
+                override fun onClick(position: Int, model: Board) {
+                    val intent = Intent(this@MainActivity, TaskListActivity::class.java)
+                    intent.putExtra(Constants.DOCUMENT_ID, model.documentID)
+                    startActivity(intent)
+
+                }
+
+            })
         }
         else{
             rvBoardList.visibility = View.GONE
