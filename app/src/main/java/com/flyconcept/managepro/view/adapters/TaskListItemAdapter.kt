@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.flyconcept.managepro.databinding.ItemTaskBinding
+import com.flyconcept.managepro.firebase.FirestoreClass
 import com.flyconcept.managepro.model.Task
 import io.grpc.internal.SharedResourceHolder
 
@@ -53,6 +54,7 @@ class TaskListItemAdapter(private val context: Context, private var list: ArrayL
     override fun getItemCount(): Int {
         return list.size
     }
+
 
     inner class MyViewHolder(binding:ItemTaskBinding):RecyclerView.ViewHolder(binding.root){
         val tvAddTaskList = binding.tvAddTaskList

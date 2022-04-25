@@ -26,7 +26,10 @@ class TaskListActivity : BaseActivity() {
         showProgressDialog(resources.getString(R.string.please_wait))
         FirestoreClass().getBoardDetails(this, boardDocumentID)
     }
+    fun addUpdateTaskListSuccess(){
 
+        FirestoreClass().getBoardDetails(this, mBoardDetails.documentID)
+    }
     fun boardDetails(board: Board) {
         hideProgressDialog()
         mBoardDetails = board
