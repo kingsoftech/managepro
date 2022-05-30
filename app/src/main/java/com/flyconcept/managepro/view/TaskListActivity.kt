@@ -1,7 +1,7 @@
 package com.flyconcept.managepro.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.flyconcept.managepro.R
@@ -15,33 +15,35 @@ import com.flyconcept.managepro.view.adapters.TaskListItemAdapter
 class TaskListActivity : BaseActivity() {
     var taskListActivityBinding: ActivityTaskListBinding? = null
     private lateinit var mBoardDetails: Board
+    private lateinit var mBoardDocumentId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         taskListActivityBinding = ActivityTaskListBinding.inflate(layoutInflater)
         setContentView(taskListActivityBinding!!.root)
-        var boardDocumentID = ""
         if (intent.hasExtra(Constants.DOCUMENT_ID)) {
-            boardDocumentID = intent.getStringExtra(Constants.DOCUMENT_ID)!!
+            mBoardDocumentId = intent.getStringExtra(Constants.DOCUMENT_ID)!!
         }
         showProgressDialog(resources.getString(R.string.please_wait))
-        FirestoreClass().getBoardDetails(this, boardDocumentID)
+        FirestoreClass().getBoardDetails(this, mBoardDocumentId)
     }
     fun addUpdateTaskListSuccess(){
-
+        hideProgressDialog()
+        showProgressDialog(resources.getString(R.string.please_wait))
         FirestoreClass().getBoardDetails(this, mBoardDetails.documentID)
     }
     fun boardDetails(board: Board) {
-        hideProgressDialog()
+
         mBoardDetails = board
+        hideProgressDialog()
         setUpActionBar(board.name)
         val addTaskList = Task(resources.getString(R.string.add_list))
-        board.taskList.add(addTaskList)
+        mBoardDetails.taskList.add(addTaskList)
         var rvTaskList:RecyclerView =  taskListActivityBinding!!.rvTaskList
         rvTaskList.layoutManager = LinearLayoutManager(this,
             LinearLayoutManager.HORIZONTAL,
             false)
         rvTaskList.setHasFixedSize(true)
-        val adapter = TaskListItemAdapter(this, board.taskList)
+        val adapter = TaskListItemAdapter(this, mBoardDetails.taskList)
         rvTaskList.adapter = adapter
 
     }
@@ -57,5 +59,41 @@ class TaskListActivity : BaseActivity() {
 
         }
         taskListActivityBinding!!.toolbarTaskListActivity.setNavigationOnClickListener { onBackPressed() }
+    }
+
+    fun createTaskList(taskListName: String) {
+
+        Log.e("Task List Name", taskListName)
+
+        // Create and Assign the task details
+        val task = Task(taskListName, FirestoreClass().getCurrentUserId())
+
+        mBoardDetails.taskList.add(0, task) // Add task to the first position of ArrayList
+        mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1) // Remove the last position as we have added the item manually for adding the TaskList.
+
+        // Show the progress dialog.
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().addUpdateTaskList(this@TaskListActivity, mBoardDetails)
+    }
+    fun updateTaskList(position: Int, listName: String, model: Task) {
+
+        val task = Task(listName, model.createdBy)
+
+        mBoardDetails.taskList[position] = task
+        mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
+
+        // Show the progress dialog.
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().addUpdateTaskList(this@TaskListActivity, mBoardDetails)
+    }
+    fun deleteTaskList(position: Int) {
+        mBoardDetails.taskList.removeAt(position)
+
+        mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
+
+        // Show the progress dialog.
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().addUpdateTaskList(this@TaskListActivity, mBoardDetails)
+
     }
 }

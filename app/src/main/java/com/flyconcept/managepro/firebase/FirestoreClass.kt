@@ -43,6 +43,42 @@ class FirestoreClass(){
                 Log.e(activity.javaClass.simpleName, "error writing document" ,e)
             }
     }
+    fun addUpdateTaskList(activity: TaskListActivity, board: Board) {
+
+        val taskListHashMap = HashMap<String, Any>()
+        taskListHashMap[Constants.TASK_LIST] = board.taskList
+
+        mFireStore.collection(Constants.BOARDS)
+            .document(board.documentID)
+            .update(taskListHashMap)
+            .addOnSuccessListener {
+                Log.e(activity.javaClass.simpleName, "TaskList updated successfully.")
+
+                activity.addUpdateTaskListSuccess()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while creating a board.", e)
+            }
+    }
+
+//    fun addUpdateTaskList(activity: TaskListActivity, board: Board){
+//        val taskListHashMap =HashMap<String, Any>()
+//        taskListHashMap[Constants.TASK_LIST] = board.taskList
+//
+//        mFireStore.collection(Constants.BOARDS)
+//            .document(board.documentID)
+//            .update(taskListHashMap)
+//            .addOnSuccessListener {
+//                Log.e(activity.javaClass.simpleName, "tasklist updated successfully")
+//                activity.addUpdateTaskListSuccess()
+//            }
+//            .addOnFailureListener {
+//                exception->
+//                activity.hideProgressDialog()
+//                Log.e(activity.javaClass.simpleName, "Error while creating a board", exception)
+//            }
+//    }
 
     fun getBoardList(activity: MainActivity){
         mFireStore.collection(Constants.BOARDS)
@@ -123,57 +159,7 @@ class FirestoreClass(){
 
             }
     }
-//    fun signInUser(activity: Activity) {
-//
-//        // Here we pass the collection name from which we wants the data.
-//        mFireStore.collection(Constants.USER)
-//            // The document id to get the Fields of user.
-//            .document(getCurrentUserId())
-//            .get()
-//            .addOnSuccessListener { document ->
-//                Log.e(activity.javaClass.simpleName, document.toString())
-//
-//                // Here we have received the document snapshot which is converted into the User Data model object.
-//                val loggedInUser = document.toObject(User::class.java)!!
-//
-//                // Here call a function of base activity for transferring the result to it.
-//                when (activity) {
-//                    is SignInActivity -> {
-//                        activity.signInSuccess(loggedInUser!!)
-//                    }
-//                    is MainActivity -> {
-//                        activity.updateNavigationUserDetails(loggedInUser!!)
-//                    }
-//
-//                }
-//            }
-//            .addOnFailureListener { e ->
-//                // Here call a function of base activity for transferring the result to it.
-//                when (activity) {
-//                    is SignInActivity -> {
-//                        activity.hideProgressDialog()
-//                    }
-//                    is MainActivity -> {
-//                        activity.hideProgressDialog()
-//                    }
-//
-//                }
-//                Log.e(
-//                    activity.javaClass.simpleName,
-//                    "Error while getting loggedIn user details",
-//                    e
-//                )
-//            }
-//    }
-////    fun getCurrentUserId(): String {
-//
-//        val currentUser = FirebaseAuth.getInstance().currentUser
-//        var currentUserId = " "
-//        if(currentUser != null){
-//            currentUserId = currentUser.uid
-//        }
-//        return currentUserId
-//    }
+
     fun getCurrentUserId(): String {
         // An Instance of currentUser using FirebaseAuth
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -196,7 +182,7 @@ class FirestoreClass(){
                 Log.i(activity.javaClass.simpleName, document.toString())
                 val board = document.toObject(Board::class.java)!!
                 board.documentID = document.id
-                activity.boardDetails(document.toObject(Board::class.java)!!)
+                activity.boardDetails(board)
             }
             .addOnFailureListener {e->
                 activity.hideProgressDialog()

@@ -5,11 +5,13 @@
       <map>
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/drawable-anydpi/shape_dialog_rounded.xml" value="0.1" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/drawable/ic_vector_color_accent_done_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/drawable/nav_header_main_background.xml" value="0.1" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/drawable/shape_button_rounded.xml" value="0.1" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/drawable/white_border_shape_button_rounded.xml" value="0.1" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/activity_create_board.xml" value="0.1" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/activity_intro.xml" value="0.1576923076923077" />
-        <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/activity_main.xml" value="0.15391192817443353" />
+        <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/activity_main2.xml" value="0.1576923076923077" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/activity_my_profile.xml" value="0.1576923076923077" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/activity_sign_in.xml" value="0.1" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
@@ -17,11 +19,15 @@
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/activity_task_list.xml" value="0.1" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/app_bar_main.xml" value="0.1" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/dialog_progress.xml" value="0.1576923076923077" />
+        <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/fragment_dashboard.xml" value="0.1576923076923077" />
+        <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/fragment_home.xml" value="0.1576923076923077" />
+        <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/fragment_notifications.xml" value="0.1576923076923077" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/item_board.xml" value="0.1" />
-        <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/item_task.xml" value="0.1" />
+        <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/item_task.xml" value="0.22" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/main_content.xml" value="0.1" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/layout/nav_header_main.xml" value="0.1" />
         <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/menu/activity_main_drawer.xml" value="0.1" />
+        <entry key="..\:/Users/SOFTECH/AndroidStudioProjects/ManagePro/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1576923076923077" />
       </map>
     </option>
   </component>

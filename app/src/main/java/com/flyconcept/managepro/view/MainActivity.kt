@@ -29,7 +29,7 @@ import java.util.ArrayList
 
 class MainActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListener{
     var activityMainBinding: ActivityMainBinding? = null
-    private lateinit var mUsername:String
+    lateinit var mUsername:String
     private val startActivityForResultLauncher:ActivityResultLauncher<Intent>
     = registerForActivityResult(ActivityResultContracts.
     StartActivityForResult()){result->
